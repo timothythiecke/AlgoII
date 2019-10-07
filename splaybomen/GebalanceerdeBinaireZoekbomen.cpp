@@ -1,11 +1,22 @@
 // GebalanceerdeBinaireZoekbomen.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include <fstream>
 #include <iostream>
 #include <string>
 
 #include "zoekboom17.h"
 #include "Splayboom.h"
+
+
+void readFileIntoTree(Zoekboom<std::string, int> &tree) {
+
+    std::string word;
+    std::ifstream file("splaybomen/Shakespeare.txt");
+    while (file >> word) {
+        tree.voegtoe(word, 0);
+    }
+}
 
 int main()
 {
@@ -45,6 +56,9 @@ int main()
     tree2.zoek(1, ouder, plaats);
     tree2.teken("eennaarhonderd.txt");
 
-
-
+    SplayBoom<std::string, int> wordTree;
+    wordTree.hookAfterSplay = [](zoekKnoop<std::string, int> &knoop) { knoop.data++; };
+    readFileIntoTree(wordTree);
+    wordTree.teken("shake.txt");
 }
+

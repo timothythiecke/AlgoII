@@ -1,6 +1,7 @@
 #pragma once
 
 #include "zoekboom17.h"
+#include <functional>
 
 
 
@@ -37,6 +38,7 @@ class SplayBoom : public Zoekboom<Sleutel, Data>
 public:
 	virtual Zoekboom<Sleutel, Data>* voegtoe(const Sleutel& sleutel, const Data& data, bool dubbelsToestaan = false) override;
 	virtual void zoek(const Sleutel& sleutel, zoekKnoop<Sleutel, Data>*& ouder, Zoekboom<Sleutel, Data>*& plaats) override;
+    std::function<void (zoekKnoop<Sleutel, Data> &)> hookAfterSplay;
 
 protected:
 	void splay(Zoekboom<Sleutel, Data>* node);
@@ -51,6 +53,11 @@ Zoekboom<Sleutel, Data>* SplayBoom<Sleutel, Data>::voegtoe(const Sleutel& sleute
 {
 	this->splay(Zoekboom<Sleutel, Data>::voegtoe(sleutel, data, dubbelsToestaan));
 
+    // function oproepen geef uw knoop mee
+
+    if (this->hookAfterSplay) {
+        this->hookAfterSplay(**this);
+    }
 	return nullptr;
 }
 
@@ -62,8 +69,14 @@ void SplayBoom<Sleutel, Data>::zoek(const Sleutel& sleutel, zoekKnoop<Sleutel, D
 	Zoekboom<Sleutel, Data>::zoek(sleutel, ouder, plaats);
 	this->splay(plaats);
 
+
 	ouder = (*this)->ouder;
 	plaats = this;
+
+    if (this->hookAfterSplay) {
+        this->hookAfterSplay(**this);
+    }
+    // function oproepen geef uw knoop mee
 }
 
 
