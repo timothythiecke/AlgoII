@@ -149,7 +149,7 @@ void SplayBoom<Sleutel, Data>::splay(Zoekboom<Sleutel, Data>* node)
 
 			//ESplayState state = ESplayState::INVALID;
 
-			// Needs cleanup!
+			// Needs cleanup
 			if ((*node)->ouder->ouder->giveChildTree(true) && (*node)->ouder->sleutel == (*node)->ouder->ouder->giveChildTree(true)->sleutel) // p linkerkind van g
 			{
 				if ((*node)->ouder->giveChildTree(false) && (*node)->ouder->giveChildTree(false)->sleutel == (*node)->sleutel) // c rechterkind van p

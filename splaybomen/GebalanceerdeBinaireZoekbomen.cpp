@@ -37,5 +37,14 @@ int main()
 	Zoekboom<int, int>* node;
 	tree.zoek(2, parent, node);*/
 
+    // used 20 for a visisble graph
+    SplayBoom<int, int> tree2;
+    for (int i = 1; i <= 20; i++) {
+        tree2.voegtoe(i, i);
+    }
+    tree2.zoek(1, ouder, plaats);
+    tree2.teken("eennaarhonderd.txt");
+
+
 
 }
