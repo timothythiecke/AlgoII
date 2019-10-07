@@ -7,6 +7,8 @@
 
 #include "zoekboom17.h"
 #include "Splayboom.h"
+#include <algorithm>
+#include <cctype>
 
 
 void readFileIntoTree(Zoekboom<std::string, int> &tree) {
@@ -14,6 +16,8 @@ void readFileIntoTree(Zoekboom<std::string, int> &tree) {
     std::string word;
     std::ifstream file("splaybomen/Shakespeare.txt");
     while (file >> word) {
+        word.erase(std::remove_if(word.begin(), word.end(), [](char letter) { return letter == ';' || letter == ',' || letter == '.'; }), word.end());
+        std::transform(word.begin(), word.end(), word.begin(), [](unsigned char c){ return std::tolower(c); });
         tree.voegtoe(word, 0);
     }
 }
@@ -60,5 +64,13 @@ int main()
     wordTree.hookAfterSplay = [](zoekKnoop<std::string, int> &knoop) { knoop.data++; };
     readFileIntoTree(wordTree);
     wordTree.teken("shake.txt");
+
+    std::cout << wordTree.geefDiepte() << std::endl;
+    int c = 0;
+
+    wordTree.inorder([&c](const zoekKnoop<std::string, int> &knoop) { c++; });
+
+    std::cout << c << std::endl;
+
 }
 
