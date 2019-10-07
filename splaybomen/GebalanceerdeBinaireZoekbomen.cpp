@@ -5,65 +5,37 @@
 #include <string>
 
 #include "zoekboom17.h"
+#include "Splayboom.h"
 
 int main()
 {
-	Zoekboom<int, std::string> tree;
-	/*tree.voegtoe(0, "Hallo");
-	tree.voegtoe(1, "mijn");
-	tree.voegtoe(-1, "naam'");
-	tree.voegtoe(2, "is");
-	tree.voegtoe(3, "is");
-	tree.voegtoe(-100, "Timothy");
-	tree.voegtoe(100, "Thiecke");
-	tree.voegtoe(1000, "en");
-	tree.voegtoe(500, "dit");
-	tree.voegtoe(-2, "werkt");*/
-	
-	// Boom voor linker rotatie
-	tree.voegtoe(-2, "l");
-	tree.voegtoe(2, "gamma");
-	tree.voegtoe(-3, "alpha");
-	tree.voegtoe(-1, "beta");
-	tree.voegtoe(0, "p");
-	tree.voegtoe(3, "zoddo");
-	tree.voegtoe(-4, "grimbo");
+	SplayBoom<int, int> tree;
+	tree.voegtoe(1, 0);
+	tree.voegtoe(23, 0);
+	tree.voegtoe(25, 0);
+	tree.voegtoe(6, 0);
+	tree.voegtoe(26, 0);
+	tree.voegtoe(0, 0);
+	tree.voegtoe(4, 0);
+	tree.voegtoe(99, 0);
+	tree.voegtoe(-1, 0);
+	tree.voegtoe(22, 0);
+	tree.voegtoe(2, 0);
+	tree.voegtoe(5, 0);
+	//tree.voegtoe(-3, 0);
 
-	// Boom voor rechtse rotatie
-	/*tree.voegtoe(0, "l");
-	tree.voegtoe(-1, "alpha");
-	tree.voegtoe(2, "p");
-	tree.voegtoe(1, "beta");
-	tree.voegtoe(3, "gamma");*/
+	zoekKnoop<int, int>* ouder;
+	Zoekboom<int, int>* plaats;
+	tree.zoek(25, ouder, plaats);
+	tree.zoek(0, ouder, plaats);
+	tree.zoek(23, ouder, plaats);
+
+	tree.teken("splay.txt");
 
 
-	tree.schrijf(std::cout);
-	tree.teken("temp.txt");
+	/*zoekKnoop<int, int>* parent;
+	Zoekboom<int, int>* node;
+	tree.zoek(2, parent, node);*/
 
-	std::cout << "Diepte: " << tree.geefDiepte();
 
-	//Zoekboom<int, std::string>& linker_deel_boom = tree->giveChildTree(true);
-	
-	std::cout << "\n" << tree->data << "\n";
-
-	//linker_deel_boom.rotate(true);
-	//tree.rotate(true);
-	
-	//tree.teken("rotate.txt");
-
-	tree.maakOnevenwichtig(true);
-	tree.teken("onevenwichtig.txt");
-
-	std::cout << "Representatie van de onevenwichtige boom is " << (tree.repOK() ? "" : "niet ") << "OK" << std::endl;
-
-	tree.maakEvenwichtig();
-	tree.teken("evenwichtig.txt");
-
-	std::cout << "Representatie van de evenwichtige boom is " << (tree.repOK() ? "" : "niet ") << "OK" << std::endl;
-	
-	int k = 9;
-	/*if (tree)
-	{
-		tree = tree->links;
-	}*/
 }

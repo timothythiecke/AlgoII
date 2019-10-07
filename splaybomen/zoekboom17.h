@@ -30,9 +30,13 @@ using std::vector;
 template <class Sleutel,class Data>
 class zoekKnoop;
 
+template <class Sleutel, class Data>
+class SplayBoom;
+
 template <class Sleutel,class Data>
 class Zoekboom : public unique_ptr<zoekKnoop<Sleutel,Data>>{
 //....move en copy. Noot: als er geen copy nodig is, zet hem beste op delete.
+	friend class SplayBoom<Sleutel, Data>;
 public:
     void inorder(std::function<void(const zoekKnoop<Sleutel,Data>&)> bezoek) const;
     void schrijf(ostream& os) const;
@@ -68,13 +72,13 @@ public:
     // geefBoomBovenKnoop: gegeven een knooppointer, wele boom wijst naar de knoop
     // preconditie: knoop moet een naar een geldige knoop wijzen.
 Zoekboom<Sleutel, Data>* geefBoomBovenKnoop(zoekKnoop<Sleutel, Data>& knoopptr);
-void voegtoe(const Sleutel& sleutel,const Data& data,bool dubbelsToestaan=false);
+virtual Zoekboom<Sleutel, Data>* voegtoe(const Sleutel& sleutel,const Data& data,bool dubbelsToestaan=false);
 
 protected:
 //zoekfunctie zoekt sleutel en geeft de boom in waaronder de sleutel zit (eventueel een lege boom als de sleutel
 //ontbreekt) en de pointer naar de ouder (als die bestaat, anders nulpointer).
 //noot: alhoewel de functie niets verandert aan de boom is ze geen const functie.
-    void zoek(const Sleutel& sleutel, zoekKnoop<Sleutel,Data>*& ouder, Zoekboom<Sleutel,Data>*& plaats);
+    virtual void zoek(const Sleutel& sleutel, zoekKnoop<Sleutel,Data>*& ouder, Zoekboom<Sleutel,Data>*& plaats);
 };
 
 template <class Sleutel,class Data>
@@ -405,7 +409,8 @@ Zoekboom<Sleutel, Data>* Zoekboom<Sleutel,Data>::geefBoomBovenKnoop(zoekKnoop<Sl
 }
 
 template <class Sleutel,class Data>
-void Zoekboom<Sleutel,Data>::voegtoe(const Sleutel& sleutel,const Data& data,bool dubbelsToestaan){
+//void Zoekboom<Sleutel,Data>::voegtoe(const Sleutel& sleutel,const Data& data,bool dubbelsToestaan){
+Zoekboom<Sleutel, Data>* Zoekboom<Sleutel, Data>::voegtoe(const Sleutel & sleutel, const Data & data, bool dubbelsToestaan) {
     zoekKnoop<Sleutel, Data>* ouder;
     Zoekboom<Sleutel, Data>* plaats;
     Zoekboom<Sleutel, Data>::zoek(sleutel,ouder,plaats);
@@ -418,6 +423,8 @@ void Zoekboom<Sleutel,Data>::voegtoe(const Sleutel& sleutel,const Data& data,boo
         nieuw->ouder=ouder;
         *plaats=move(nieuw);
     }
+
+	return plaats;
 }
 
 
